@@ -1,0 +1,56 @@
+<div class="container py-4 text-main bg-darkBg w-full h-full gap-y-4 flex flex-col">
+    <nav class="flex items-center px-8 gap-x-8 w-full border-thin h-20 rounded-2xl font-bold text-2xl">
+      <img src="../../../assets/icccLogo.svg" class="w-14 h-14" alt="logo">
+      Intensive Care Central Commands (ICCC)
+    </nav>
+  
+    <div class="flex w-full h-full gap-x-4">
+      <!-- Patient List Section -->
+      <section class="border-thin rounded-2xl min-w-72 h-full">
+        <h2 class="text-xl pl-4 pt-4 pb-2 font-normal border-b-light m-1">Patient List</h2>
+        <ul>
+          <li class="h-10 flex items-center justify-between px-2 mt-4 mb-2" *ngFor="let patient of Patients">
+            <div class="flex items-center h-full gap-x-2">
+              <div class="w-1 h-full rounded-full shadow-[-1px_0px_12px_rgb(255,255,255,0.25)]" [ngStyle]="{'background-color': patient.priorityColor}"></div>
+              <img class="h-full w-auto rounded-lg shadow-[-1px_0px_12px_rgb(255,255,255,0.25)]" [src]="patient.profilePicUrl" alt="">
+              <h4 class="text-sm"><span class="opacity-80">{{ patient.fullName }} , {{patient.gender}} , {{patient.age}}</span><br/>{{patient.ICU}}</h4>
+            </div>
+            <div class="w-10 h-10 rounded-full flex items-center justify-center font-semibold text-xl shadow-[-1px_-1px_12px_rgb(255,255,255,0.25)]" [ngStyle]="{'background-color': patient.priorityColor}">{{patient.highPriorityScore}}</div>
+          </li>
+        </ul>
+      </section>
+  
+   <!-- Patient Cards Section -->
+   <section class="flex flex-wrap justify-between h-fit gap-y-4 w-full">
+    <div class="flex flex-col border-thin w-72 h-56 rounded-2xl" *ngFor="let patient of Patients">
+      <div class="h-10 flex items-center justify-between px-2 mt-4 mb-2">
+        <div class="flex items-center h-full gap-x-2">
+          <div class="w-1 h-full rounded-full shadow-[-1px_0px_12px_rgb(255,255,255,0.25)]" [ngStyle]="{'background-color': patient.priorityColor}"></div>
+          <img class="h-full w-auto rounded-lg shadow-[-1px_0px_12px_rgb(255,255,255,0.25)]" [src]="patient.profilePicUrl" alt="">
+          <h4 class="text-sm"><span class="opacity-80">{{ patient.fullName }} , {{patient.gender}} , {{patient.age}}</span><br/>{{patient.ICU}}</h4>
+        </div>
+        <div class="w-10 h-10 rounded-full flex items-center justify-center font-semibold text-xl shadow-[-1px_-1px_12px_rgb(255,255,255,0.25)]" [ngStyle]="{'background-color': patient.priorityColor}">{{patient.highPriorityScore}}</div>
+      </div>
+      <div class="grid grid-cols-3 h-full w-full text-center">
+        <div class="flex flex-col h-full justify-around text-xs">
+          <div><h2>Pulse</h2><h3>{{patient.vitals.pulse}}</h3></div>
+          <div><h2>FiO2</h2><h3>{{patient.vitals.fiO2}}%</h3></div>
+          <div><h2>Minute Vol.</h2><h3>{{patient.vitals.minuteVolume}}</h3></div>
+        </div>
+        <div class="flex flex-col h-full justify-around text-xs">
+          <div><h2>Blood Press</h2><h3>{{patient.vitals.bloodPressure.systolic}} / {{patient.vitals.bloodPressure.diastolic}}</h3></div>
+          <div><h2>PEEPO</h2><h3>{{patient.vitals.peepo}}</h3></div>
+          <div><h2>Tidal Vol.</h2><h3>{{patient.vitals.tidalVolume}}</h3></div>
+        </div>
+        <div class="flex flex-col h-full justify-around text-xs">
+          <div><h2>SpO2</h2><h3>{{patient.vitals.sp02}}%</h3></div>
+          <div><h2>Peak Pres.</h2><h3>{{patient.vitals.peakPressure}}</h3></div>
+          <div><h2>Resp. Rate</h2><h3>{{patient.vitals.respiratoryRate}}</h3></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+    </div>
+  </div>
+  
