@@ -1,28 +1,35 @@
-<div class="container py-4 text-main bg-darkBg w-full h-full gap-y-4 flex flex-col">
-    <nav class="flex items-center px-8 gap-x-8 w-full border-thin h-20 rounded-2xl font-bold text-2xl">
+<div class="p-[2rem] py-4 text-main bg-darkBg w-full h-full gap-y-4 flex flex-col">
+    <nav class="flex items-center px-8 gap-x-8 w-full shadow-[-1px_-1px_4px_rgb(255,255,255,0.2),1px_1px_8px_rgb(0,0,0,0.5)] bg-[#191E25] h-20 min-h-20 rounded-2xl font-bold text-2xl">
       <img src="../../../assets/icccLogo.svg" class="w-14 h-14" alt="logo">
       Intensive Care Central Commands (ICCC)
     </nav>
   
-    <div class="flex w-full h-full gap-x-4">
+    <div class="flex w-full h-[92%] gap-x-4">
       <!-- Patient List Section -->
-      <section class="border-thin rounded-2xl min-w-72 h-full">
-        <h2 class="text-xl pl-4 pt-4 pb-2 font-normal border-b-light m-1">Patient List</h2>
-        <ul>
+      <section class="shadow-[-1px_-1px_4px_rgb(255,255,255,0.2),1px_1px_8px_rgb(0,0,0,0.5)] h-[93%] p-2 bg-[#191E25] rounded-2xl min-w-72">
+        <h2 class="text-xl pl-4 pt-2 pb-2 font-semibold rounded-t-2xl m-0.5 sticky top-0 bg-[#191E25] z-10">Patient List</h2>
+        <ul class="overflow-y-auto h-[94%]">
           <li class="h-10 flex items-center justify-between px-2 mt-4 mb-2" *ngFor="let patient of Patients">
             <div class="flex items-center h-full gap-x-2">
               <div class="w-1 h-full rounded-full shadow-[-1px_0px_12px_rgb(255,255,255,0.25)]" [ngStyle]="{'background-color': patient.priorityColor}"></div>
               <img class="h-full w-auto rounded-lg shadow-[-1px_0px_12px_rgb(255,255,255,0.25)]" [src]="patient.profilePicUrl" alt="">
-              <h4 class="text-sm"><span class="opacity-80">{{ patient.fullName }} , {{patient.gender}} , {{patient.age}}</span><br/>{{patient.ICU}}</h4>
+              <h4 class="text-xs">
+                <span class="opacity-80">{{ patient.fullName }} , {{patient.gender}} , {{patient.age}}</span><br/>
+                {{patient.ICU}}
+              </h4>
             </div>
-            <div class="w-10 h-10 rounded-full flex items-center justify-center font-semibold text-xl shadow-[-1px_-1px_12px_rgb(255,255,255,0.25)]" [ngStyle]="{'background-color': patient.priorityColor}">{{patient.highPriorityScore}}</div>
+            <div class="w-8 h-8 rounded-full flex items-center justify-center font-semibold text-base shadow-[-1px_-1px_12px_rgb(255,255,255,0.25)]" [ngStyle]="{'background-color': patient.priorityColor}">
+              {{patient.highPriorityScore}}
+            </div>
           </li>
         </ul>
       </section>
-  
-   <!-- Patient Cards Section -->
-   <section class="flex flex-wrap justify-between h-fit gap-y-4 w-full">
-    <div class="flex flex-col border-thin w-72 h-56 rounded-2xl" *ngFor="let patient of Patients">
+      
+
+<section class="overflow-y-auto gap-2 justify-between flex flex-wrap w-full h-[93%] p-1">
+  <!-- !first card template -->
+  <ng-container *ngFor="let patient of Patients">
+    <div class="flex flex-col shadow-[-1px_-1px_4px_rgb(255,255,255,0.2),1px_1px_8px_rgb(0,0,0,0.5)] w-[300px] h-56 rounded-2xl bg-[#191E25]" *ngIf="!showSecondTemplate || patient.highPriorityScore < 5">
       <div class="h-10 flex items-center justify-between px-2 mt-4 mb-2">
         <div class="flex items-center h-full gap-x-2">
           <div class="w-1 h-full rounded-full shadow-[-1px_0px_12px_rgb(255,255,255,0.25)]" [ngStyle]="{'background-color': patient.priorityColor}"></div>
@@ -49,8 +56,22 @@
         </div>
       </div>
     </div>
-  </section>
-  
+    <!-- !second card template -->
+    <div class="flex flex-col shadow-[-1px_-1px_4px_rgb(255,255,255,0.2),1px_1px_8px_rgb(0,0,0,0.5)] w-[300px] h-56 rounded-2xl p-4" [ngStyle]="{'background-color': patient.priorityColor}" *ngIf="patient.highPriorityScore > 4 && showSecondTemplate">
+      <h2 class="text-2xl font-bold pb-2">{{patient.ICU}}<br/></h2>
+      <p class="text-xs" *ngIf="patient.vitals.pulse < 60 || patient.vitals.pulse > 100">Pulse: Abnormal</p>
+      <p class="text-xs" *ngIf="patient.vitals.bloodPressure.systolic < 90 || patient.vitals.bloodPressure.systolic > 140 || patient.vitals.bloodPressure.diastolic < 60 || patient.vitals.bloodPressure.diastolic > 90">Blood Pressure: Abnormal</p>
+      <p class="text-xs" *ngIf="patient.vitals.sp02 < 90">SpO2: Abnormal</p>
+      <p class="text-xs" *ngIf="patient.vitals.fiO2 > 40">FiO2: Abnormal</p>
+      <p class="text-xs" *ngIf="patient.vitals.peepo < 5 || patient.vitals.peepo > 8">PEEPO: Abnormal</p>
+      <p class="text-xs" *ngIf="patient.vitals.peakPressure > 15">Peak Pressure: Abnormal</p>
+      <p class="text-xs" *ngIf="patient.vitals.minuteVolume < 5 || patient.vitals.minuteVolume > 8">Minute Volume: Abnormal</p>
+      <p class="text-xs" *ngIf="patient.vitals.tidalVolume < 6 || patient.vitals.tidalVolume > 8">Tidal Volume: Abnormal</p>
+      <p class="text-xs" *ngIf="patient.vitals.respiratoryRate < 12 || patient.vitals.respiratoryRate > 20">Respiratory Rate: Abnormal</p>
+    </div>
+  </ng-container>
+</section>
+
     </div>
   </div>
   
